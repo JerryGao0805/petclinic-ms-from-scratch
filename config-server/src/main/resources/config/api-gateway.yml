@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: customers
+          uri: lb://CUSTOMERS-SERVICE
+          predicates:
+            - Path=/customers/**
+          filters:
+            - StripPrefix=1
+        - id: vets
+          uri: lb://VETS-SERVICE
+          predicates:
+            - Path=/vets/**
+          filters:
+            - StripPrefix=1
+        - id: visits
+          uri: lb://VISITS-SERVICE
+          predicates:
+            - Path=/visits/**
+          filters:
+            - StripPrefix=1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

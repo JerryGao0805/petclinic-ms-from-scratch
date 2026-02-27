@@ -1,0 +1,74 @@
+services:
+  config-server:
+    image: petclinic/config-server:dev
+    ports:
+      - "8888:8888"
+
+  discovery-server:
+    image: petclinic/discovery-server:dev
+    depends_on:
+      - config-server
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "false"
+      EUREKA_CLIENT_FETCH_REGISTRY: "false"
+    restart: unless-stopped
+
+  customers-service:
+    image: petclinic/customers-service:dev
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+    restart: unless-stopped
+
+  vets-service:
+    image: petclinic/vets-service:dev
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+    restart: unless-stopped
+
+
+  visits-service:
+    image: petclinic/visits-service:dev
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+    restart: unless-stopped
+
+  api-gateway:
+    image: petclinic/api-gateway:dev
+    depends_on:
+      - config-server
+      - discovery-server
+      - customers-service
+      - vets-service
+      - visits-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+    restart: unless-stopped
