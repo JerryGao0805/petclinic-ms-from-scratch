@@ -1,3 +1,4 @@
+  [![CI](https://github.com/JerryGao1991/petclinic-ms-from-scratch/actions/workflows/ci.yml/badge.svg)](https://github.com/JerryGao1991/petclinic-ms-from-scratch/actions/workflows/ci.yml)
   # petclinic-ms-from-scratch
 
   一个从零复现的 Spring PetClinic Microservices（精简版）学习项目：
