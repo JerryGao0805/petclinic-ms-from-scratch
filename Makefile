@@ -45,16 +45,16 @@ docker-build: package
 	docker build -t petclinic/api-gateway:$(TAG) ./api-gateway
 
 up: docker-build
-	$(COMPOSE) up -d
+	TAG=$(TAG) $(COMPOSE) up -d
 
 ps:
-	$(COMPOSE) ps
+	TAG=$(TAG) $(COMPOSE) ps
 
 logs:
-	$(COMPOSE) logs -f --tail=200
+	TAG=$(TAG) $(COMPOSE) logs -f --tail=200
 
 down:
-	$(COMPOSE) down
+	TAG=$(TAG) $(COMPOSE) down
 
 verify:
 	bash scripts/verify.sh

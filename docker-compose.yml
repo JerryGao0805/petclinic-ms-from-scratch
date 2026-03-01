@@ -1,11 +1,11 @@
 services:
   config-server:
-    image: petclinic/config-server:dev
+    image: petclinic/config-server:${TAG:-dev}
     ports:
       - "8888:8888"
 
   discovery-server:
-    image: petclinic/discovery-server:dev
+    image: petclinic/discovery-server:${TAG:-dev}
     depends_on:
       - config-server
     ports:
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   customers-service:
-    image: petclinic/customers-service:dev
+    image: petclinic/customers-service:${TAG:-dev}
     depends_on:
       - config-server
       - discovery-server
@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
 
   vets-service:
-    image: petclinic/vets-service:dev
+    image: petclinic/vets-service:${TAG:-dev}
     depends_on:
       - config-server
       - discovery-server
@@ -45,7 +45,7 @@ services:
 
 
   visits-service:
-    image: petclinic/visits-service:dev
+    image: petclinic/visits-service:${TAG:-dev}
     depends_on:
       - config-server
       - discovery-server
@@ -58,7 +58,7 @@ services:
     restart: unless-stopped
 
   api-gateway:
-    image: petclinic/api-gateway:dev
+    image: petclinic/api-gateway:${TAG:-dev}
     depends_on:
       - config-server
       - discovery-server

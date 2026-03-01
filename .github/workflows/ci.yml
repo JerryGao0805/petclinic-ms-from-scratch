@@ -29,17 +29,11 @@ jobs:
         run: ./mvnw -ntp -B -DskipTests package
 
       - name: Docker build (all services)
-        run: |
-          docker build -t petclinic/config-server:ci ./config-server
-          docker build -t petclinic/discovery-server:ci ./discovery-server
-          docker build -t petclinic/customers-service:ci ./customers-service
-          docker build -t petclinic/vets-service:ci ./vets-service
-          docker build -t petclinic/visits-service:ci ./visits-service
-          docker build -t petclinic/api-gateway:ci ./api-gateway
+        run: make docker-build TAG=ci
 
       - name: Docker compose up (all service)
         run:
-          make up
+          make up TAG=ci
       - name: Docker compose verify (all service)
         run:
           make verify
