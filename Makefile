@@ -58,3 +58,4 @@ down:
 
 verify:
 	bash scripts/verify.sh
+

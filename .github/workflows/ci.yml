@@ -36,3 +36,10 @@ jobs:
           docker build -t petclinic/vets-service:ci ./vets-service
           docker build -t petclinic/visits-service:ci ./visits-service
           docker build -t petclinic/api-gateway:ci ./api-gateway
+
+      - name: Docker compose up (all service)
+        run:
+          make up
+      - name: Docker compose verify (all service)
+        run:
+          make verify
