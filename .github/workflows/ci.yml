@@ -34,6 +34,15 @@ jobs:
       - name: Docker compose up (all service)
         run:
           make up TAG=ci
+
       - name: Docker compose verify (all service)
         run:
           make verify
+
+      - name: Logs (on failure)
+        if: failure()
+        run: TAG=ci docker compose logs --no-color --tail=200
+
+      - name: Down (always)
+        if: always()
+        run: TAG=ci docker compose down -v
