@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://visits-db:5432/visits
+    username: visits
+    password: visits
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true

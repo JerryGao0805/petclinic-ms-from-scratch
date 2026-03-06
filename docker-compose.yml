@@ -43,15 +43,28 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
     restart: unless-stopped
 
+  visits-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: visits
+      POSTGRES_USER: visits
+      POSTGRES_PASSWORD: visits
+    ports:
+      - "5432:5432"
+    volumes:
+      - visits-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   visits-service:
     image: petclinic/visits-service:${TAG:-dev}
     depends_on:
       - config-server
       - discovery-server
+      - visits-db
     ports:
       - "8083:8083"
     environment:
+      SPRING_PROFILES_ACTIVE: "docker"
       SPRING_CONFIG_IMPORT: "configserver:"
       SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
@@ -72,3 +85,6 @@ services:
       SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
     restart: unless-stopped
+
+volumes:
+  visits-db-data:
