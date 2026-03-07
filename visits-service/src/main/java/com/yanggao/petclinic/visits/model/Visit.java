@@ -51,6 +51,12 @@ public class Visit {
         return description;
     }
 
+    public void update(Long petId, LocalDate visitDate, String description) {
+        this.petId = petId;
+        this.visitDate = visitDate;
+        this.description = description;
+    }
+
 //    public void setPetId(Long petId) {
 //        this.petId = petId;
 //    }
